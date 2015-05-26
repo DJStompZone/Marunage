@@ -12,8 +12,8 @@ methodOverride　= require 'method-override'
 request       　= require 'superagent'
 configs       　= require('konfig')()
 {myUtil}      　= require './myUtil'
-dirname       　= path.resolve()
-imagesPath    　= dirname + '/images/'
+# dirname       　= path.resolve()
+# imagesPath    　= dirname + '/images/'
 
 app = express()
 app.set 'port', process.env.PORT or configs.app.PORT

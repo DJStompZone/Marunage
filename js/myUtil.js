@@ -5,87 +5,7 @@
   request = require('request');
 
   (function() {
-    var loadBase64Data, twitter;
-    twitter = {
-      get: function(tweet, key, isRT) {
-        var ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, t;
-        t = isRT ? tweet.retweeted_status : tweet;
-        switch (key) {
-          case 'description':
-            return t.user.description;
-          case 'display_url':
-            return (ref = t.entities) != null ? (ref1 = ref.media) != null ? ref1[0].display_url : void 0 : void 0;
-          case 'entities':
-            return t.entities;
-          case 'expanded_url':
-            return (ref2 = t.entities) != null ? (ref3 = ref2.media) != null ? ref3[0].expanded_url : void 0 : void 0;
-          case 'followers_count':
-            return t.user.followers_count;
-          case 'friends_count':
-            return t.user.friends_count;
-          case 'hashtags':
-            return (ref4 = t.entities) != null ? ref4.hashtags : void 0;
-          case 'media_url':
-            return _.map(t.extended_entities.media, function(media) {
-              return media.media_url;
-            });
-          case 'media_url_https':
-            return _.map(t.extended_entities.media, function(media) {
-              return media.media_url_https;
-            });
-          case 'media_url:orig':
-            return _.map(t.extended_entities.media, function(media) {
-              return media.media_url + ':orig';
-            });
-          case 'media_url_https:orig':
-            return _.map(t.extended_entities.media, function(media) {
-              return media.media_url_https + ':orig';
-            });
-          case 'video_url':
-            return (ref5 = t.extended_entities) != null ? (ref6 = ref5.media[0]) != null ? (ref7 = ref6.video_info) != null ? ref7.variants[0].url : void 0 : void 0 : void 0;
-          case 'name':
-            return t.user.name;
-          case 'profile_banner_url':
-            return t.user.profile_banner_url;
-          case 'profile_image_url':
-            return t.user.profile_image_url;
-          case 'statuses_count':
-            return t.user.statuses_count;
-          case 'screen_name':
-            return t.user.screen_name;
-          case 'source':
-            return t.source;
-          case 'text':
-            return t.text;
-          case 'timestamp_ms':
-            return t.timestamp_ms;
-          case 'tweet.created_at':
-            return t.created_at;
-          case 'tweet.favorite_count':
-            return t.favorite_count;
-          case 'tweet.retweet_count':
-            return t.retweet_count;
-          case 'tweet.id_str':
-            return t.id_str;
-          case 'tweet.lang':
-            return t.lang;
-          case 'user.created_at':
-            return t.user.created_at;
-          case 'user.id_str':
-            return t.user.id_str;
-          case 'user.favorite_count':
-            return t.favorite_count;
-          case 'user.retweet_count':
-            return t.retweet_count;
-          case 'user.lang':
-            return t.user.lang;
-          case 'user.url':
-            return t.user.url;
-          default:
-            return null;
-        }
-      }
-    };
+    var loadBase64Data;
     loadBase64Data = function(url) {
       return new Promise(function(resolve, reject) {
         return request({
@@ -104,7 +24,6 @@
       });
     };
     return exports.myUtil = {
-      twitter: twitter,
       loadBase64Data: loadBase64Data
     };
   }).call(this);
