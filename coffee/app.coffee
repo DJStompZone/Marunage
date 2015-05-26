@@ -1,15 +1,14 @@
-_             　= require 'lodash'
-http          　= require 'http'
 fs            　= require 'fs'
+http          　= require 'http'
 path          　= require 'path'
 util          　= require 'util'
 cors          　= require 'cors'
 morgan        　= require 'morgan'
 express       　= require 'express'
+request       　= require 'superagent'
 bodyParser    　= require 'body-parser'
 cookieParser  　= require 'cookie-parser'
 methodOverride　= require 'method-override'
-request       　= require 'superagent'
 configs       　= require('konfig')()
 {myUtil}      　= require './myUtil'
 # dirname       　= path.resolve()
@@ -28,10 +27,11 @@ app.get '/', (req, res) ->
   res.end 'innn'
   return
 
-###
-API
-###
 app.post '/api/downloadFromURL', (req, res) ->
+  console.log 'Go convert!!', req.body
+  id = setInterval( ->
+    res.setHeader('content-type', 'application/json')
+  , 3000)
   request
     .post('http://waifu2x.udp.jp/api')
     .type('form')
@@ -42,51 +42,20 @@ app.post '/api/downloadFromURL', (req, res) ->
     .end (err, response) ->
       if err
         console.log 'err = ', err
+        res.json
+          body: req.body
+          error: response.error
+        clearInterval(id)
         return
       console.log 'res = ', response
-      console.log '====='
       # fs.writeFile "#{imagesPath}#{Date.now()}.png", response.body, (err) ->
       #   console.log err
       res.json
         body: response.body
         type: response.type
+      clearInterval(id)
     return
   return
-
-# app.post '/api/download', (req, res) ->
-#   console.log req.body
-#   # console.log res
-#   myUtil.loadBase64Data req.body.url
-#   .then (base64Data) ->
-#     console.log 'loda'
-#     # decodedImage = new Buffer(base64Data, 'base64').toString('binary')
-#     buff = new Buffer(base64Data.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64')
-#     console.log typeof buff
-#     fs.writeFile "#{imagesPath}image_decoded.png", buff, (err) ->
-#       console.log err
-
-#     console.log "#{imagesPath}image_decoded.png"
-#     request
-#       .post('http://waifu2x.udp.jp/api')
-#       .type('form')
-#       .set('Content-Type', 'multipart/form-data')
-#       .field 'noise', req.body.noise
-#       .field 'scale', req.body.scale
-#       .attach 'file', "#{imagesPath}image_decoded.png", 'a.png'
-#       # .send
-#       #   file: "image_decoded.png"
-#       #   noise: req.body.noise
-#       #   scale: req.body.scale
-#       .end (err, response) ->
-#         if err
-#           console.log 'err = ', err
-#           return
-#         console.log 'response = ', response
-#         console.log '====='
-#         res.json data: response
-#         # res.json base64Data: res
-#       return
-
 
 http.createServer(app).listen app.get('port'), ->
   console.log 'Express server listening on port ' + app.get('port')
