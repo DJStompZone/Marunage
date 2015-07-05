@@ -1,5 +1,6 @@
 fs            　= require 'fs'
 http          　= require 'http'
+https          　= require 'https'
 path          　= require 'path'
 util          　= require 'util'
 cors          　= require 'cors'
@@ -13,6 +14,14 @@ configs       　= require('konfig')()
 {myUtil}      　= require './myUtil'
 # dirname       　= path.resolve()
 # imagesPath    　= dirname + '/images/'
+
+
+hskey   = fs.readFileSync path.resolve 'keys', 'renge-key.pem'
+hscert  = fs.readFileSync path.resolve 'keys', 'renge-cert.pem'
+
+httpsOptions =
+  key: hskey
+  cert: hscert
 
 app = express()
 app.set 'port', process.env.PORT or configs.app.PORT
@@ -29,9 +38,10 @@ app.get '/', (req, res) ->
 
 app.post '/api/downloadFromURL', (req, res) ->
   console.log 'Go convert!!', req.body
-  id = setInterval( ->
-    res.setHeader('content-type', 'application/json')
-  , 3000)
+  # id = setInterval( ->
+  #   console.log '!!!'
+  #   res.setHeader('content-type', 'application/json')
+  # , 3000)
   request
     .post('http://waifu2x.udp.jp/api')
     .type('form')
@@ -45,7 +55,6 @@ app.post '/api/downloadFromURL', (req, res) ->
         res.json
           body: req.body
           error: response.error
-        clearInterval(id)
         return
       console.log 'res = ', response
       # fs.writeFile "#{imagesPath}#{Date.now()}.png", response.body, (err) ->
@@ -53,10 +62,10 @@ app.post '/api/downloadFromURL', (req, res) ->
       res.json
         body: response.body
         type: response.type
-      clearInterval(id)
+      # clearInterval(id)
     return
   return
 
-http.createServer(app).listen app.get('port'), ->
+https.createServer(httpsOptions, app).listen app.get('port'), ->
   console.log 'Express server listening on port ' + app.get('port')
   return
