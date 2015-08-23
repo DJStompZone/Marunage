@@ -1,6 +1,6 @@
 fs            　= require 'fs'
 http          　= require 'http'
-https          　= require 'https'
+https         　= require 'https'
 path          　= require 'path'
 util          　= require 'util'
 cors          　= require 'cors'
@@ -38,10 +38,8 @@ app.get '/', (req, res) ->
 
 app.post '/api/downloadFromURL', (req, res) ->
   console.log 'Go convert!!', req.body
-  # id = setInterval( ->
-  #   console.log '!!!'
-  #   res.setHeader('content-type', 'application/json')
-  # , 3000)
+  console.time "downloadFromURL"
+
   request
     .post('http://waifu2x.udp.jp/api')
     .type('form')
@@ -57,12 +55,14 @@ app.post '/api/downloadFromURL', (req, res) ->
           error: response.error
         return
       console.log 'res = ', response
+      console.timeEnd "downloadFromURL"
+
       # fs.writeFile "#{imagesPath}#{Date.now()}.png", response.body, (err) ->
       #   console.log err
+
       res.json
         body: response.body
         type: response.type
-      # clearInterval(id)
     return
   return
 

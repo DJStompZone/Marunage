@@ -66,6 +66,7 @@
 
   app.post('/api/downloadFromURL', function(req, res) {
     console.log('Go convert!!', req.body);
+    console.time("downloadFromURL");
     request.post('http://waifu2x.udp.jp/api').type('form').send({
       'url': req.body.url,
       'noise': req.body.noise - 0,
@@ -80,6 +81,7 @@
         return;
       }
       console.log('res = ', response);
+      console.timeEnd("downloadFromURL");
       return res.json({
         body: response.body,
         type: response.type
