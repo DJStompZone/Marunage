@@ -12,16 +12,7 @@ cookieParser  　= require 'cookie-parser'
 methodOverride　= require 'method-override'
 configs       　= require('konfig')()
 {myUtil}      　= require './myUtil'
-# dirname       　= path.resolve()
-# imagesPath    　= dirname + '/images/'
-
-
-hskey   = fs.readFileSync path.resolve 'keys', 'renge-key.pem'
-hscert  = fs.readFileSync path.resolve 'keys', 'renge-cert.pem'
-
-httpsOptions =
-  key: hskey
-  cert: hscert
+Mailer         = require path.resolve 'js', 'Mailer'
 
 app = express()
 app.set 'port', process.env.PORT or configs.app.PORT
@@ -33,7 +24,7 @@ app.use morgan('dev')
 app.use cors()
 
 app.get '/', (req, res) ->
-  res.end 'innn'
+  res.sendFile path.resolve 'index.html'
   return
 
 app.post '/api/downloadFromURL', (req, res) ->
@@ -50,21 +41,50 @@ app.post '/api/downloadFromURL', (req, res) ->
     .end (err, response) ->
       if err
         console.log 'err = ', err
-        res.json
-          body: req.body
-          error: response.error
+        sendMail(err, req.body, response)
+        res.json body: req.body
         return
-      console.log 'res = ', response
-      console.timeEnd "downloadFromURL"
 
-      # fs.writeFile "#{imagesPath}#{Date.now()}.png", response.body, (err) ->
-      #   console.log err
+      console.log 'res = ', response
+      console.log 'res.type = ', response.type
+      console.timeEnd "downloadFromURL"
 
       res.json
         body: response.body
         type: response.type
     return
   return
+
+createHTMLForMail = (err, body, response) ->
+  """
+  <p>Assis-waifu2x Error</p>
+  <h1>ERR</h1>
+  <p>#{err}</p>
+  <hr>
+  <h1>BODY</h1>
+  <p>#{body.url}</p>
+  <hr>
+  <h1>Response</h1>
+  <p>#{response.error}</p>
+  <p>#{response.text}</p>
+  """
+
+sendMail = (err, body, response) ->
+  params =
+    to: configs.app.MAIL_TO
+    subject: 'Assist-waifu2x Error'
+    html: createHTMLForMail(err, body, response)
+  mailer = new Mailer(params)
+  mailer.send()
+  .then (result) -> res.json result: result, body: body, error: response.error
+  .catch (err) -> res.json err: err
+
+
+hskey        = fs.readFileSync path.resolve 'keys', 'renge-key.pem'
+hscert       = fs.readFileSync path.resolve 'keys', 'renge-cert.pem'
+httpsOptions =
+  key: hskey
+  cert: hscert
 
 https.createServer(httpsOptions, app).listen app.get('port'), ->
   console.log 'Express server listening on port ' + app.get('port')

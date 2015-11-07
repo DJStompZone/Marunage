@@ -1,5 +1,15 @@
 default:
-  PORT: 3000
+  PORT: 3003
 
 production: &production
   port: #{process.env.PORT}
+  GOOGLE_AUTH:
+    CLIENT_ID: #{process.env.CLIENT_ID}
+    CLIENT_SECRET: #{process.env.CLIENT_SECRET}
+    REFRESH_TOKEN: #{process.env.REFRESH_TOKEN}
+    ACCESS_TOKEN: #{process.env.ACCESS_TOKEN}
+  MAIL_SERVICE: 'gmail'
+  MAIL_AUTH:
+    user: #{process.env.MAIL_ADDRESS}
+  MAIL_FROM: #{process.env.MAIL_ADDRESS}
+  MAIL_TO: #{process.env.MAIL_ADDRESS}
