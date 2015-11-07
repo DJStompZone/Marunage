@@ -69,7 +69,8 @@
         console.log('err = ', err);
         sendMail(err, req.body, response);
         res.json({
-          body: req.body
+          body: req.body,
+          error: response.error
         });
         return;
       }

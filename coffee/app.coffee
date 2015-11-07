@@ -42,7 +42,9 @@ app.post '/api/downloadFromURL', (req, res) ->
       if err
         console.log 'err = ', err
         sendMail(err, req.body, response)
-        res.json body: req.body
+        res.json
+          body: req.body
+          error: response.error
         return
 
       console.log 'res = ', response
