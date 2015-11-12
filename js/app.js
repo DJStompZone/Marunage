@@ -57,9 +57,9 @@
     res.sendFile(path.resolve('index.html'));
   });
 
-  app.post('/api/downloadFromURL', function(req, res) {
+  app.post('/api/download/waifu2x', function(req, res) {
     console.log('Go convert!!', req.body);
-    console.time("downloadFromURL");
+    console.time("'/api/download/waifu2x");
     request.post('http://waifu2x.udp.jp/api').type('form').send({
       'url': req.body.url,
       'noise': req.body.noise - 0,

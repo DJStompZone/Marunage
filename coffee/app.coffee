@@ -27,9 +27,9 @@ app.get '/', (req, res) ->
   res.sendFile path.resolve 'index.html'
   return
 
-app.post '/api/downloadFromURL', (req, res) ->
+app.post '/api/download/waifu2x', (req, res) ->
   console.log 'Go convert!!', req.body
-  console.time "downloadFromURL"
+  console.time "'/api/download/waifu2x"
 
   request
     .post('http://waifu2x.udp.jp/api')
