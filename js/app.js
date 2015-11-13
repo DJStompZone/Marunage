@@ -57,9 +57,8 @@
     res.sendFile(path.resolve('index.html'));
   });
 
-  app.post('/api/download/waifu2x', function(req, res) {
-    console.log('Go convert!!', req.body);
-    console.time("'/api/download/waifu2x");
+  app.post('/api/downloadFromURL', function(req, res) {
+    console.time("downloadFromURL");
     request.post('http://waifu2x.udp.jp/api').type('form').send({
       'url': req.body.url,
       'noise': req.body.noise - 0,
@@ -77,6 +76,34 @@
       console.log('res = ', response);
       console.log('res.type = ', response.type);
       console.timeEnd("downloadFromURL");
+      return res.json({
+        body: response.body,
+        type: response.type
+      });
+    });
+    return;
+  });
+
+  app.post('/api/download/waifu2x', function(req, res) {
+    console.log('Go convert!!', req.body);
+    console.time("/api/download/waifu2x");
+    request.post('http://waifu2x.udp.jp/api').type('form').send({
+      'url': req.body.url,
+      'noise': req.body.noise - 0,
+      'scale': req.body.scale - 0
+    }).end(function(err, response) {
+      if (err) {
+        console.log('err = ', err);
+        sendMail(err, req.body, response);
+        res.json({
+          body: req.body,
+          error: response.error
+        });
+        return;
+      }
+      console.log('res = ', response);
+      console.log('res.type = ', response.type);
+      console.timeEnd("/api/download/waifu2x");
       return res.json({
         body: response.body,
         type: response.type
