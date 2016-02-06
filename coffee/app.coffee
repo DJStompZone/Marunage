@@ -119,7 +119,7 @@ httpsOptions =
   key: hskey
   cert: hscert
 
-servser = https.createServer(httpsOptions, app)
+server = https.createServer(httpsOptions, app)
 server.timeout = TIMEOUT_MS
 server.listen app.get('port'), ->
   console.log 'Express server listening on port ' + app.get('port')
