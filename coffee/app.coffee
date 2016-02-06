@@ -13,6 +13,7 @@ methodOverride　= require 'method-override'
 configs       　= require('konfig')()
 {myUtil}      　= require './myUtil'
 Mailer         = require path.resolve 'js', 'Mailer'
+TIMEOUT_MS     = 10 * 60 * 1000
 
 app = express()
 app.set 'port', process.env.PORT or configs.app.PORT
@@ -118,6 +119,8 @@ httpsOptions =
   key: hskey
   cert: hscert
 
-https.createServer(httpsOptions, app).listen app.get('port'), ->
+servser = https.createServer(httpsOptions, app)
+server.timeout = TIMEOUT_MS
+server.listen app.get('port'), ->
   console.log 'Express server listening on port ' + app.get('port')
   return
