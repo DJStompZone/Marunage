@@ -19,7 +19,7 @@ class HistoryCtrl {
 
 app.component("history", {
   template: `
-    <figure ng-repeat="url in $ctrl.history ">
+    <figure ng-repeat="url in $ctrl.history track by $index">
       <img lazyload="1" src={{url}}>
       <figcation><a href={{url}} target="_blank">{{url}}</a></figcation>
     </figure>
