@@ -5,6 +5,7 @@ path          　= require 'path'
 util          　= require 'util'
 cors          　= require 'cors'
 morgan        　= require 'morgan'
+redis         　= require 'redis'
 express       　= require 'express'
 request       　= require 'superagent'
 bodyParser    　= require 'body-parser'
@@ -13,7 +14,12 @@ methodOverride　= require 'method-override'
 configs       　= require('konfig')()
 {myUtil}      　= require './myUtil'
 Mailer         = require path.resolve 'js', 'Mailer'
-TIMEOUT_MS     = 10 * 60 * 1000
+
+TIMEOUT_MS          = 10 * 60 * 1000
+REDIS_DATABASE_NAME = 'ASSIST-WAIFU2X'
+REDIS_HISTORY       = "#{REDIS_DATABASE_NAME}:history"
+
+redisClient = redis.createClient()
 
 app = express()
 app.set 'port', process.env.PORT or configs.app.PORT
@@ -28,39 +34,24 @@ app.get '/', (req, res) ->
   res.sendFile path.resolve 'index.html'
   return
 
-# 後で消す
-app.post '/api/downloadFromURL', (req, res) ->
-  console.time "downloadFromURL"
-  request
-    .post('http://waifu2x.udp.jp/api')
-    .type('form')
-    .send
-      'url': req.body.url
-      'noise': req.body.noise - 0
-      'scale': req.body.scale - 0
-    .end (err, response) ->
-      if err
-        console.log 'err = ', err
-        sendMail(err, req.body, response)
-        res.json
-          body: req.body
-          error: response.error
-        return
-
-      console.log 'res = ', response
-      console.log 'res.type = ', response.type
-      console.timeEnd "downloadFromURL"
-
-      res.json
-        body: response.body
-        type: response.type
-    return
+app.get '/list', (req, res) ->
+  res.sendFile path.resolve 'index.html'
   return
 
+getHistory = ->
+  return new Promise (resolve, reject) ->
+    redisClient.lrange REDIS_HISTORY, 0, -1,  (err, items) ->
+      if err then console.error err
+      return resolve items
+
+saveHistory = (value) ->
+  redisClient.rpush REDIS_HISTORY, value
+  getHistory().then (items) -> console.log items
 
 app.post '/api/download/waifu2x', (req, res) ->
   console.log 'Go convert!!', req.body
   console.time "/api/download/waifu2x"
+  saveHistory(req.body.url)
 
   request
     .post('http://waifu2x.udp.jp/api')
