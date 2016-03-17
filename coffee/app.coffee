@@ -31,6 +31,9 @@ app.use morgan('dev')
 app.use cors()
 app.use express.static(path.join(__dirname, '..', 'public'))
 
+###
+Page
+###
 app.get '/', (req, res) ->
   res.sendFile path.resolve 'public', 'index.html'
   return
@@ -39,10 +42,9 @@ app.get '/history', (req, res) ->
   res.sendFile path.resolve 'public', 'history.html'
   return
 
-app.get '/api/history/list', (req, res) ->
-  getHistory().then (items) -> res.json history: items
-  return
-
+###
+API
+###
 getHistory = ->
   return new Promise (resolve, reject) ->
     redisClient.lrange REDIS_HISTORY, 0, -1,  (err, items) ->
@@ -52,6 +54,10 @@ getHistory = ->
 saveHistory = (value) ->
   redisClient.rpush REDIS_HISTORY, value
   getHistory().then (items) -> console.log items
+
+app.get '/api/history/list', (req, res) ->
+  getHistory().then (items) -> res.json history: items
+  return
 
 app.post '/api/download/waifu2x', (req, res) ->
   console.log 'Go convert!!', req.body

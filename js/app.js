@@ -65,6 +65,11 @@
 
   app.use(express["static"](path.join(__dirname, '..', 'public')));
 
+
+  /*
+  Page
+   */
+
   app.get('/', function(req, res) {
     res.sendFile(path.resolve('public', 'index.html'));
   });
@@ -73,13 +78,10 @@
     res.sendFile(path.resolve('public', 'history.html'));
   });
 
-  app.get('/api/history/list', function(req, res) {
-    getHistory().then(function(items) {
-      return res.json({
-        history: items
-      });
-    });
-  });
+
+  /*
+  API
+   */
 
   getHistory = function() {
     return new Promise(function(resolve, reject) {
@@ -98,6 +100,14 @@
       return console.log(items);
     });
   };
+
+  app.get('/api/history/list', function(req, res) {
+    getHistory().then(function(items) {
+      return res.json({
+        history: items
+      });
+    });
+  });
 
   app.post('/api/download/waifu2x', function(req, res) {
     console.log('Go convert!!', req.body);
