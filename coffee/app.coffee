@@ -53,7 +53,6 @@ getHistory = ->
 
 saveHistory = (value) ->
   redisClient.rpush REDIS_HISTORY, value
-  getHistory().then (items) -> console.log items
 
 app.get '/api/history/list', (req, res) ->
   getHistory().then (items) -> res.json history: items

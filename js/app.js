@@ -95,10 +95,7 @@
   };
 
   saveHistory = function(value) {
-    redisClient.rpush(REDIS_HISTORY, value);
-    return getHistory().then(function(items) {
-      return console.log(items);
-    });
+    return redisClient.rpush(REDIS_HISTORY, value);
   };
 
   app.get('/api/history/list', function(req, res) {
