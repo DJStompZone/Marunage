@@ -29,13 +29,18 @@ app.use bodyParser.urlencoded(extended: true, limit: '50mb')
 app.use methodOverride()
 app.use morgan('dev')
 app.use cors()
+app.use express.static(path.join(__dirname, '..', 'public'))
 
 app.get '/', (req, res) ->
-  res.sendFile path.resolve 'index.html'
+  res.sendFile path.resolve 'public', 'index.html'
   return
 
-app.get '/list', (req, res) ->
-  res.sendFile path.resolve 'index.html'
+app.get '/history', (req, res) ->
+  res.sendFile path.resolve 'public', 'history.html'
+  return
+
+app.get '/api/history/list', (req, res) ->
+  getHistory().then (items) -> res.json history: items
   return
 
 getHistory = ->

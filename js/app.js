@@ -63,12 +63,22 @@
 
   app.use(cors());
 
+  app.use(express["static"](path.join(__dirname, '..', 'public')));
+
   app.get('/', function(req, res) {
-    res.sendFile(path.resolve('index.html'));
+    res.sendFile(path.resolve('public', 'index.html'));
   });
 
-  app.get('/list', function(req, res) {
-    res.sendFile(path.resolve('index.html'));
+  app.get('/history', function(req, res) {
+    res.sendFile(path.resolve('public', 'history.html'));
+  });
+
+  app.get('/api/history/list', function(req, res) {
+    getHistory().then(function(items) {
+      return res.json({
+        history: items
+      });
+    });
   });
 
   getHistory = function() {
