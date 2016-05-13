@@ -1,21 +1,15 @@
-const app = angular.module("app", []);
+"use strict";
 
-class MyAppCtrl {
-}
+const app = angular.module("app", []);
 
 app.component("myApp", {
   template: `<history></history>`,
-  controller: MyAppCtrl
+  controller: function() {
+    this.$onInit = function() {
+      console.log(this);
+    };
+  },
 });
-
-class HistoryCtrl {
-  constructor($http) {
-    $http.get('/api/history/list').success((data) => {
-      console.log(data);
-      this.history = data.history.reverse();
-    });
-  }
-}
 
 app.component("history", {
   template: `
@@ -26,5 +20,14 @@ app.component("history", {
   `,
   controller: HistoryCtrl
 });
+
+function HistoryCtrl ($http) {
+  this.$onInit = () => {
+    $http.get('/api/history/list').success((data) => {
+      console.log(data);
+      this.history = data.history.reverse();
+    });
+  };
+}
 
 angular.bootstrap(document.body, [app.name]);
