@@ -10,7 +10,7 @@ bodyParser    　= require 'body-parser'
 cookieParser  　= require 'cookie-parser'
 methodOverride　= require 'method-override'
 configs       　= require('konfig')()
-{myUtil}      　= require './myUtil'
+{my}          　= require './my'
 
 TIMEOUT_MS      = 10 * 60 * 1000
 

@@ -1,13 +1,16 @@
 
 path    = require 'path'
+fs      = require 'fs'
 redis   = require 'redis'
 request = require 'superagent'
 configs = require('konfig')()
 Mailer  = require path.resolve 'js', 'Mailer'
+{my}    = require path.resolve 'js', 'my'
 
-REDIS_DATABASE_NAME = 'ASSIST-WAIFU2X'
-REDIS_HISTORY       = "#{REDIS_DATABASE_NAME}:history"
-redisClient         = redis.createClient()
+
+# REDIS_DATABASE_NAME = 'ASSIST-WAIFU2X'
+# REDIS_HISTORY       = "#{REDIS_DATABASE_NAME}:history"
+# redisClient         = redis.createClient()
 
 
 module.exports = (app) ->
@@ -53,12 +56,12 @@ module.exports = (app) ->
   app.post '/api/download/waifu2x', (req, res) ->
     console.log 'Go convert!!', req.body
     console.time "/api/download/waifu2x"
-    saveHistory(req.body.url)
 
     sendOption =
       'url': req.body.url
       'noise': req.body.noise - 0
       'scale': req.body.scale - 0
+      'style': req.body.style
 
     request
     .post('http://waifu2x.udp.jp/api')
