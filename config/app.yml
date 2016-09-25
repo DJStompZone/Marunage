@@ -1,5 +1,5 @@
 default:
-  PORT: 3000
+  PORT: 9966
   MONGODB_URI: "mongodb://127.0.0.1/Maaruage"
 
 production: &production

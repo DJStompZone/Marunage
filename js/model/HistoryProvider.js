@@ -22,11 +22,15 @@
     createdAt: {
       type: Date,
       "default": Date.now()
+    },
+    updatedAt: {
+      type: Date,
+      "default": Date.now()
     }
   });
 
   HistorySchema.index({
-    createdAt: -1
+    updatedAt: -1
   });
 
   mongoose.model('History', HistorySchema);
