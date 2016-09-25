@@ -1,8 +1,10 @@
 default:
   PORT: 3000
+  MONGODB_URI: "mongodb://127.0.0.1/Maaruage"
 
 production: &production
-  port: #{process.env.PORT}
+  PORT: #{process.env.PORT}
+  MONGODB_URI: "mongodb://127.0.0.1/Maaruage"
   GOOGLE_AUTH:
     CLIENT_ID: #{process.env.CLIENT_ID}
     CLIENT_SECRET: #{process.env.CLIENT_SECRET}

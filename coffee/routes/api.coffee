@@ -1,28 +1,28 @@
 
-path    = require 'path'
-fs      = require 'fs'
-redis   = require 'redis'
-request = require 'superagent'
-configs = require('konfig')()
-Mailer  = require path.resolve 'js', 'Mailer'
-{my}    = require path.resolve 'js', 'my'
-
-
-# REDIS_DATABASE_NAME = 'ASSIST-WAIFU2X'
-# REDIS_HISTORY       = "#{REDIS_DATABASE_NAME}:history"
-# redisClient         = redis.createClient()
+path            = require 'path'
+fs              = require 'fs'
+redis           = require 'redis'
+request         = require 'superagent'
+configs         = require('konfig')()
+Mailer          = require path.resolve 'js', 'Mailer'
+{my}            = require path.resolve 'js', 'my'
+HistoryProvider = require path.resolve 'js', 'model', 'HistoryProvider'
 
 
 module.exports = (app) ->
 
   getHistory = ->
     return new Promise (resolve, reject) ->
-      redisClient.lrange REDIS_HISTORY, 0, -1,  (err, items) ->
-        if err then console.error err
+      new HistoryProvider().find()
+      .then (items) ->
+        console.log items
         return resolve items
+      .catch (err) -> return reject err
 
-  saveHistory = (value) ->
-    redisClient.rpush REDIS_HISTORY, value
+  saveHistory = (url) ->
+    new HistoryProvider().upsert(url: url)
+    .then (result) -> console.log result
+    .catch (err) -> console.log err
 
   createHTMLForMail = (err, body, response) ->
     """
@@ -57,11 +57,14 @@ module.exports = (app) ->
     console.log 'Go convert!!', req.body
     console.time "/api/download/waifu2x"
 
+    saveHistory(req.body.url)
+
     sendOption =
       'url': req.body.url
       'noise': req.body.noise - 0
       'scale': req.body.scale - 0
-      'style': req.body.style
+      'style': req.body.style or 'art'
+    console.log sendOption
 
     request
     .post('http://waifu2x.udp.jp/api')

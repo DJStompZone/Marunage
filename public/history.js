@@ -13,9 +13,9 @@ app.component("myApp", {
 
 app.component("history", {
   template: `
-    <figure ng-repeat="url in $ctrl.history track by $index">
-      <img lazyload="1" src={{url}}>
-      <figcation><a href={{url}} target="_blank">{{url}}</a></figcation>
+    <figure ng-repeat="history in $ctrl.histories track by $index">
+      <img lazyload="1" src={{history.url}}>
+      <figcation><a href={{history.url}} target="_blank">{{history.url}}</a></figcation>
     </figure>
   `,
   controller: HistoryCtrl
@@ -25,7 +25,7 @@ function HistoryCtrl ($http) {
   this.$onInit = () => {
     $http.get('/api/history/list').success((data) => {
       console.log(data);
-      this.history = data.history.reverse();
+      this.histories = data.history;
     });
   };
 }
