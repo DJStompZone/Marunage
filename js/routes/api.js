@@ -20,9 +20,9 @@
 
   module.exports = function(app) {
     var createHTMLForMail, getHistory, saveHistory, sendMail;
-    getHistory = function() {
+    getHistory = function(params) {
       return new Promise(function(resolve, reject) {
-        return new HistoryProvider().find().then(function(items) {
+        return new HistoryProvider().find(params).then(function(items) {
           console.log(items);
           return resolve(items);
         })["catch"](function(err) {
@@ -63,9 +63,13 @@
       });
     };
     app.get('/api/history/list', function(req, res) {
-      getHistory().then(function(items) {
+      getHistory(req.query).then(function(items) {
         return res.json({
           history: items
+        });
+      })["catch"](function(err) {
+        return res.status(400).json({
+          message: err.message
         });
       });
     });

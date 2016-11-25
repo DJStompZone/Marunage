@@ -44,13 +44,13 @@
       HistoryProvider.__super__.constructor.call(this, History);
     }
 
-    HistoryProvider.prototype.find = function() {
+    HistoryProvider.prototype.find = function(params) {
       return new Promise((function(_this) {
         return function(resolve, reject) {
           console.time("History findByIdAndUpdate");
           return History.find({}).sort({
             updatedAt: -1
-          }).exec(function(err, doc) {
+          }).limit(params.limit - 0 || 20).skip((params.page - 0 || 0) * params.limit).exec(function(err, doc) {
             console.timeEnd("History findByIdAndUpdate");
             if (err) {
               return reject(err);

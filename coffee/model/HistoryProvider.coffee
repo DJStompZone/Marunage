@@ -26,11 +26,13 @@ module.exports = class HistoryProvider extends DBBaseProvider
   constructor: () ->
     super(History)
 
-  find: ->
+  find: (params) ->
     return new Promise (resolve, reject) =>
       console.time "History findByIdAndUpdate"
       History.find {}
       .sort updatedAt: -1
+      .limit params.limit - 0 or 20
+      .skip (params.page - 0 or 0) * params.limit
       .exec (err, doc) ->
         console.timeEnd "History findByIdAndUpdate"
         if err then return reject err

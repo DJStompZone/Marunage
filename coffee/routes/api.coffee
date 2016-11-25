@@ -11,9 +11,9 @@ HistoryProvider = require path.resolve 'js', 'model', 'HistoryProvider'
 
 module.exports = (app) ->
 
-  getHistory = ->
+  getHistory = (params) ->
     return new Promise (resolve, reject) ->
-      new HistoryProvider().find()
+      new HistoryProvider().find(params)
       .then (items) ->
         console.log items
         return resolve items
@@ -50,7 +50,9 @@ module.exports = (app) ->
 
 
   app.get '/api/history/list', (req, res) ->
-    getHistory().then (items) -> res.json history: items
+    getHistory(req.query)
+    .then (items) -> res.json history: items
+    .catch (err) -> res.status(400).json message: err.message
     return
 
   app.post '/api/download/waifu2x', (req, res) ->
