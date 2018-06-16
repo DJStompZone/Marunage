@@ -10,7 +10,7 @@ module.exports = function(app) {
     res.sendFile(path.resolve('public', 'index.html'));
   });
 
-  return app.get('/history', function(req, res) {
+  app.get('/history', function(req, res) {
     res.sendFile(path.resolve('public', 'history.html'));
   });
 };

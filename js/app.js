@@ -36,7 +36,8 @@ var app = (module.exports = (function() {
   // routes, session
 
   require('./routes/api')(app);
-  return require('./routes/routes')(app);
+  require('./routes/booru')(app);
+  require('./routes/routes')(app);
 })();
 
 (function() {
@@ -50,7 +51,7 @@ var app = (module.exports = (function() {
 
   const server = https.createServer(httpsOptions, app);
   server.timeout = TIMEOUT_MS;
-  return server.listen(app.get('port'), function() {
+  server.listen(app.get('port'), function() {
     console.log(`Express server listening on port ${app.get('port')}`);
   });
 })();
