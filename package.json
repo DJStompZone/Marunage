@@ -18,11 +18,10 @@
     "crypto": "0.0.3",
     "csrf": "^2.0.1",
     "csurf": "^1.4.1",
+    "download": "^7.0.0",
     "error-handler": "^0.1.4",
     "express": "^4.13.3",
     "express-error-handler": "^0.5.4",
-    "fs": "0.0.2",
-    "fs-extra": "^6.0.1",
     "https": "^1.0.0",
     "konfig": "^0.2.1",
     "lodash": "^3.10.1",
@@ -42,15 +41,10 @@
     "yakaa": "^1.0.0"
   },
   "devDependencies": {
-    "bower": "^1.4.1",
-    "espower-coffee": "^0.10.0",
-    "espower-loader": "^0.10.0",
-    "intelli-espower-loader": "^0.6.0",
     "nodemon": "^1.17.5",
     "power-assert": "^0.10.2"
   },
   "scripts": {
-    "start": "nodemon js/app.js",
-    "test": "mocha --require espower-coffee/guess test/*.coffee"
+    "start": "nodemon js/app.js"
   }
 }
