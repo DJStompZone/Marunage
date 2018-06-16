@@ -4,7 +4,6 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 let HistoryProvider;
-const _ = require('lodash');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const { ObjectId } = Schema;

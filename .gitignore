@@ -7,3 +7,4 @@ test/*
 keys/**
 images/*
 coffee/**
+public/images/**

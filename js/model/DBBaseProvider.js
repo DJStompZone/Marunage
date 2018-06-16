@@ -4,9 +4,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 let DBBaseProvider;
-const _ = require('lodash');
 const chalk = require('chalk');
-const moment = require('moment');
 const configs = require('konfig')();
 const mongoose = require('mongoose');
 const uri = process.env.MONGOLAB_URI || configs.app.MONGODB_URI;
