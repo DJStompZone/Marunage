@@ -3,7 +3,7 @@ const Mailer = require('./Mailer');
 /**
  * TODO: GmailではなくSlackに投げる。
  */
-module.exports = class Gmailer {
+module.exports = class GMailer {
   constructor({ res }) {
     this.res = res;
     return this;
