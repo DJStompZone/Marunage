@@ -12,7 +12,7 @@ module.exports = class Booru {
   async download() {
     const response = await new Requester({ params: this.resizeOptions }).get();
     console.log(response.status);
-    console.log(response.data);
+    // console.log(response.data);
 
     const foundByExisting = response.data.match(
       '<a href="/outfiles/(.*).jpg" class="btn btn-default">',
@@ -40,8 +40,8 @@ module.exports = class Booru {
       throw new Error('failed to resize in booru2x');
     }
 
-    const ext = '.jpg'; // TODO: 選択式
-    const mine = ext === '.png' ? 'image/png' : 'image/jpeg';
+    const mime = `image/${this.resizeOptions.mime}`;
+    const ext = this.resizeOptions.mime === 'png' ? '.png' : '.jpg';
     const dist = path.resolve('public', 'images');
     const filename = `${hash}${ext}`;
     const filepath = path.resolve(dist, filename);
