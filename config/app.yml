@@ -1,10 +1,12 @@
 default:
   PORT: 9966
   MONGODB_URI: "mongodb://127.0.0.1/Maaruage"
+  REDIS_URI: 'redis://127.0.0.1:6379'
 
 production: &production
   PORT: #{process.env.PORT}
   MONGODB_URI: "mongodb://127.0.0.1/Maaruage"
+  REDIS_URI: 'redis://127.0.0.1:6379'
   GOOGLE_AUTH:
     CLIENT_ID: #{process.env.CLIENT_ID}
     CLIENT_SECRET: #{process.env.CLIENT_SECRET}
