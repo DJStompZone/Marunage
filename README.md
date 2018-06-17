@@ -4,6 +4,13 @@
 
 ### CORS SERVER for [Assist-waifu2x](https://github.com/eiurur/Assist-waifu2x)
 
+# Requirements
+
+- Node.js
+  -- < v10.1.0
+- Redis
+- MongoDB
+
 # Usage
 
 download source codes
