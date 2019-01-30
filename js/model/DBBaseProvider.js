@@ -1,16 +1,10 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let DBBaseProvider;
 const chalk = require('chalk');
 const configs = require('konfig')();
 const mongoose = require('mongoose');
 const uri = process.env.MONGOLAB_URI || configs.app.MONGODB_URI;
 const db = mongoose.connect(uri);
 
-module.exports = DBBaseProvider = class DBBaseProvider {
+module.exports = class DBBaseProvider {
   constructor(Model) {
     this.Model = Model;
     console.log(this.Model.modelName);

@@ -1,14 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let Mailer;
 const nodemailer = require('nodemailer');
 const xoauth2 = require('xoauth2');
 const configs = require('konfig')();
 
-module.exports = Mailer = class Mailer {
+module.exports = class Mailer {
   constructor(params) {
     this.mailOpts = {
       from: configs.app.MAIL_FROM,

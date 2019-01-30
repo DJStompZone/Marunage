@@ -1,9 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let HistoryProvider;
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const { ObjectId } = Schema;
@@ -30,7 +24,7 @@ mongoose.model('History', HistorySchema);
 
 const History = mongoose.model('History');
 
-module.exports = HistoryProvider = class HistoryProvider extends DBBaseProvider {
+module.exports = class HistoryProvider extends DBBaseProvider {
   constructor() {
     super(History);
   }

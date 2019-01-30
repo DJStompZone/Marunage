@@ -28,4 +28,13 @@ module.exports = class Requester {
         .catch(err => reject(err));
     });
   }
+
+  upload() {
+    return new Promise((resolve, reject) => {
+      this.instance
+        .post('/Home/upload', this.options)
+        .then(response => resolve(response))
+        .catch(err => reject(err));
+    });
+  }
 };
