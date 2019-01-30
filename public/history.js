@@ -42,14 +42,19 @@ function HistoryCtrl($http) {
       .join('&');
   };
   this.fetchHistory = qs => {
-    $http.get(`/api/history/list?${qs}`).success(data => {
-      if (!data.history.length) {
-        this.isLast = true;
-        return;
-      }
-      this.histories.concat(data.history);
-      data.history.map(history => this.histories.push(history));
-    });
+    $http
+      .get(`/api/history/list?${qs}`)
+      .then(response => {
+        if (!response.data.history.length) {
+          this.isLast = true;
+          return;
+        }
+        this.histories.concat(response.data.history);
+        response.data.history.map(history => this.histories.push(history));
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
   this.next = () => {
     this.page++;
