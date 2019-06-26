@@ -29,7 +29,6 @@ var app = (module.exports = (function() {
 
 (function() {
   // routes, session
-
   require('./routes/api')(app);
   require('./routes/booru')(app);
   require('./routes/routes')(app);
